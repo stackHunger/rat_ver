@@ -1,0 +1,30 @@
+[
+  {
+    "inputs": [
+      {"internalType":"string","name":"title","type":"string"},
+      {"internalType":"string","name":"author","type":"string"},
+      {"internalType":"uint256","name":"pages","type":"uint256"},
+      {"internalType":"string","name":"coverUrl","type":"string"}
+    ],
+    "name": "mintBook",
+    "outputs": [{"internalType":"uint256","name":"tokenId","type":"uint256"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType":"address","name":"owner","type":"address"}],
+    "name": "tokensOfOwner",
+    "outputs": [{"internalType":"uint256[]","name":"","type":"uint256[]"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType":"uint256","name":"tokenId","type":"uint256"}],
+    "name": "tokenURI",
+    "outputs": [{"internalType":"string","name":"","type":"string"}],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
+
+
