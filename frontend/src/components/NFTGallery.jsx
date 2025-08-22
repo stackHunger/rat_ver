@@ -42,12 +42,36 @@ export default function NFTGallery({ address: externalAddress, variant = 'self' 
 
   const [view, setView] = useState('grid') // grid | list
 
-  if (loading) return <div className="text-biblio-heading">Loading...</div>
-  if (error) return <div className="text-red-400 text-sm">{error}</div>
+  if (loading) return (
+    <div className="flex items-center justify-center py-12">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-biblio-gold border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <div className="text-biblio-heading font-semibold">Loading your collection...</div>
+        <div className="text-biblio-muted text-sm">Fetching your book NFTs</div>
+      </div>
+    </div>
+  )
+  
+  if (error) return (
+    <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6 text-center">
+      <div className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center mx-auto mb-4">
+        <span className="text-white text-xl">✕</span>
+      </div>
+      <div className="text-red-400 font-semibold mb-2">Failed to load collection</div>
+      <div className="text-red-300 text-sm">{error}</div>
+    </div>
+  )
+  
   if (!items.length) return (
-    <div className="text-zinc-400 text-sm flex items-center gap-3">
-      <span className="w-8 h-8 rounded-full bg-biblio-surface/80 border border-biblio-border flex items-center justify-center">📖</span>
-      <span>Your digital shelves are empty. Mint your first book to begin your collection.</span>
+    <div className="text-center py-12">
+      <div className="w-24 h-24 rounded-full bg-biblio-surface/60 border border-biblio-border flex items-center justify-center mx-auto mb-6">
+        <span className="text-4xl">📚</span>
+      </div>
+      <div className="text-biblio-heading font-semibold text-xl mb-2">Your digital shelves are empty</div>
+      <div className="text-biblio-muted mb-6">Mint your first book to begin your collection</div>
+      <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-biblio-gold to-yellow-500 text-black font-semibold hover:shadow-lg transition-all duration-200">
+        Create Your First Book
+      </button>
     </div>
   )
 
@@ -60,19 +84,38 @@ export default function NFTGallery({ address: externalAddress, variant = 'self' 
         </div>
       </div>
       {view === 'grid' ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {items.map(({ tokenId, meta }) => (
-            <div key={tokenId} className="bg-biblio-surface/60 border border-biblio-border rounded-lg overflow-hidden shadow-glow">
-              {meta?.image ? (
-                <img src={meta.image} alt={meta?.name || 'Book cover'} className="w-full h-44 object-cover" />
-              ) : (
-                <div className="w-full h-44 bg-zinc-900 flex items-center justify-center text-zinc-400">No Image</div>
-              )}
-              <div className="p-3 space-y-1">
-                <div className="font-semibold truncate" title={meta?.attributes?.find(a => a.trait_type === 'Title')?.value || meta?.name}>{meta?.attributes?.find(a => a.trait_type === 'Title')?.value || meta?.name}</div>
-                <div className="text-sm text-biblio-muted truncate" title={meta?.attributes?.find(a => a.trait_type === 'Author')?.value}>by {meta?.attributes?.find(a => a.trait_type === 'Author')?.value || 'Unknown'}</div>
-                <div className="text-xs text-zinc-300">Pages: {meta?.attributes?.find(a => a.trait_type === 'Pages')?.value || '-'}</div>
-                <div className="text-xs text-zinc-500">Token #{tokenId}</div>
+            <div key={tokenId} className="group bg-biblio-surface/40 border border-biblio-border rounded-xl overflow-hidden shadow-glow hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+              <div className="relative">
+                {meta?.image ? (
+                  <img 
+                    src={meta.image} 
+                    alt={meta?.attributes?.find(a => a.trait_type === 'Title')?.value || meta?.name || 'Book cover'} 
+                    className="w-full h-48 object-cover group-hover:brightness-110 transition-all duration-300" 
+                  />
+                ) : (
+                  <div className="w-full h-48 bg-gradient-to-br from-biblio-gold/20 to-biblio-blue/20 flex items-center justify-center">
+                    <span className="text-6xl">📖</span>
+                  </div>
+                )}
+                <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1">
+                  <span className="text-xs text-white font-mono">#{tokenId}</span>
+                </div>
+              </div>
+              <div className="p-4 space-y-2">
+                <div className="font-bold text-biblio-heading truncate" title={meta?.attributes?.find(a => a.trait_type === 'Title')?.value || meta?.name}>
+                  {meta?.attributes?.find(a => a.trait_type === 'Title')?.value || meta?.name}
+                </div>
+                <div className="text-sm text-biblio-muted truncate" title={meta?.attributes?.find(a => a.trait_type === 'Author')?.value}>
+                  by {meta?.attributes?.find(a => a.trait_type === 'Author')?.value || 'Unknown'}
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-biblio-gold font-semibold">
+                    {meta?.attributes?.find(a => a.trait_type === 'Pages')?.value || '-'} pages
+                  </span>
+                  <span className="text-biblio-muted">NFT</span>
+                </div>
               </div>
             </div>
           ))}

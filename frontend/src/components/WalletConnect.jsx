@@ -72,21 +72,40 @@ export default function WalletConnect() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-3 justify-between bg-danger-900/40 border border-danger-700/40 rounded-xl p-4 shadow-glow">
-      <div>
-        <div className="text-sm text-danger-300">Wallet</div>
-        <div className="font-mono break-all">{address || 'Not connected'}</div>
+    <div className="flex flex-col md:flex-row items-start md:items-center gap-3 justify-between bg-biblio-surface/60 border border-biblio-border rounded-xl p-4 shadow-glow">
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-2 h-2 rounded-full bg-green-400"></div>
+          <div className="text-sm text-biblio-muted">Wallet Status</div>
+        </div>
+        <div className="font-mono text-sm break-all text-biblio-heading">
+          {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Not connected'}
+        </div>
         {!chainOk && address && (
-          <div className="text-amber-300 text-sm mt-1">Wrong network — switch to BNB Testnet</div>
+          <div className="text-amber-300 text-sm mt-1 flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+            Switch to BNB Testnet
+          </div>
         )}
-        {error && <div className="text-red-400 text-sm mt-1">{error}</div>}
+        {error && <div className="text-red-400 text-sm mt-1 flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-red-400"></span>
+          {error}
+        </div>}
       </div>
       <div className="flex gap-2">
-        <button onClick={connect} className="px-4 py-2 rounded bg-danger-600 hover:bg-danger-500">
-          {address ? 'Reconnect' : 'Connect MetaMask'}
+        <button 
+          onClick={connect} 
+          className="px-4 py-2 rounded-lg bg-gradient-to-r from-biblio-gold to-yellow-500 text-black font-semibold hover:shadow-lg transition-all duration-200"
+        >
+          {address ? 'Reconnect' : 'Connect Wallet'}
         </button>
         {!chainOk && (
-          <button onClick={ensureBNBTestnet} className="px-4 py-2 rounded bg-amber-600 hover:bg-amber-500">Switch Network</button>
+          <button 
+            onClick={ensureBNBTestnet} 
+            className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold transition-all duration-200"
+          >
+            Switch Network
+          </button>
         )}
       </div>
     </div>
